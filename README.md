@@ -57,7 +57,7 @@ Hi, I'm **Nitish** 👋, a **CSE (Data Science)** student.
 
 <img src="https://skillicons.dev/icons?i=py,java,git,vscode&theme=dark&perline=4" alt="Tech stack icons" />
 
-<sub>✏️ Customizable: remove the icons you haven't used yet.</sub>
+
 
 </div>
 
