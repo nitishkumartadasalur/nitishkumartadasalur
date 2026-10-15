@@ -1,0 +1,48 @@
+name: Generate Contribution Snake
+
+on:
+  # Daily at 00:00 UTC
+  schedule:
+    - cron: "0 0 * * *"
+  # Manual run from the Actions tab
+  workflow_dispatch:
+  # Re-run automatically when this workflow file is changed on main
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/snake.yml"
+
+# Needed so the job can push the generated SVGs to the `output` branch
+permissions:
+  contents: write
+
+# Avoid overlapping runs
+concurrency:
+  group: snake
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    name: Generate snake SVGs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # 1) Build the light + dark snake SVGs into ./dist
+      - name: Generate snake
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: nitishkumartadasalur
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+
+      # 2) Publish ./dist to the `output` branch
+      - name: Push to output branch
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
